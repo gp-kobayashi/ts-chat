@@ -16,8 +16,10 @@ export default function Home() {
   const [list, setList] = useState<Data[]>([]);
 
   const handleSendMessage = () =>{
+    if(message){
     socket.emit("send_message",{message: message});
     setMessage("");
+  };
   };
 
   socket.on("received_message",(data: Data) =>{
@@ -34,11 +36,13 @@ export default function Home() {
         value={message}/>
         <button onClick={() => handleSendMessage()}>チャット送信</button>
       </div>
+      <div className={styles.chat}>
       {list.map((chat) =>(
         <div className={styles.chatArea} key={chat.message}>
           {chat.message}
         </div>
       ))}
+      </div>      
     </div>
   );
 }
