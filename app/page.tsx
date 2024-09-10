@@ -15,6 +15,13 @@ export default function Home() {
   const [message, setMessage] = useState("");
   const [list, setList] = useState<Data[]>([]);
 
+  const handleInputKeyDown = (e: 
+    React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key !== "Enter") return;
+        e.preventDefault();
+        handleSendMessage();
+      };
+
   const handleSendMessage = () =>{
     if(message){
     socket.emit("send_message",{message: message});
@@ -33,8 +40,9 @@ export default function Home() {
         <input type="text"
         placeholder="チャット…"
         onChange={(e) => setMessage(e.target.value)}
+        onKeyDown={handleInputKeyDown}
         value={message}/>
-        <button onClick={() => handleSendMessage()}>チャット送信</button>
+        <button  onClick={() => handleSendMessage()}>チャット送信</button>
       </div>
       <div className={styles.chat}>
       {list.map((chat) =>(
