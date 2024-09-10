@@ -8,19 +8,19 @@ const socket = io("http://localhost:5000")
 
 export default function Home() {
 
-  type List ={
+  type Data ={
     message: string;
   }
 
   const [message, setMessage] = useState("");
-  const [list, setList] = useState<List[]>([]);
+  const [list, setList] = useState<Data[]>([]);
 
   const handleSendMessage = () =>{
     socket.emit("send_message",{message: message});
     setMessage("");
   };
 
-  socket.on("received_message",(data: List) =>{
+  socket.on("received_message",(data: Data) =>{
     setList([...list, data]);
   });
 
