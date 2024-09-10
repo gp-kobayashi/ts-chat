@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-
+import styles from "./page.module.css";
 
 export const metadata: Metadata = {
   title: "chat App",
@@ -12,8 +12,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="ja">
+      <body className={styles.body}>
         {children}
       </body>
     </html>
