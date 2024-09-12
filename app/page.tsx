@@ -16,16 +16,13 @@ export default function Home() {
   const [list, setList] = useState<MessageData[]>([]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) =>{
-    handleSendMessage();
+    if(message){
+      socket.emit("send_message",{message: message});
+      setMessage("");
+    };
     event.preventDefault();
   };
 
-  const handleSendMessage = () =>{
-    if(message){
-    socket.emit("send_message",{message: message});
-    setMessage("");
-  };
-  };
 
   socket.on("received_message",(data: MessageData) =>{
     setList([...list, data]);
@@ -40,8 +37,8 @@ export default function Home() {
           placeholder="チャット…"
           onChange={(e) => setMessage(e.target.value)}
           value={message}/>
+        <button type="submit">チャット送信</button>
         </form>
-        <button onClick={() => handleSendMessage()}>チャット送信</button>
       </div>
       <div className={styles.chat}>
       {list.map((chat) =>(
