@@ -8,19 +8,17 @@ const socket = io("http://localhost:5000")
 
 export default function Home() {
 
-  type Data ={
+  type MessageData ={
     message: string;
   }
 
   const [message, setMessage] = useState("");
-  const [list, setList] = useState<Data[]>([]);
+  const [list, setList] = useState<MessageData[]>([]);
 
-  const handleInputKeyDown = (e: 
-    React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key !== "Enter") return;
-        e.preventDefault();
-        handleSendMessage();
-      };
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) =>{
+    handleSendMessage();
+    event.preventDefault();
+  };
 
   const handleSendMessage = () =>{
     if(message){
@@ -29,7 +27,7 @@ export default function Home() {
   };
   };
 
-  socket.on("received_message",(data: Data) =>{
+  socket.on("received_message",(data: MessageData) =>{
     setList([...list, data]);
   });
 
@@ -37,12 +35,13 @@ export default function Home() {
     <div className={styles.container}>
       <h2>チャットアプリ</h2>
       <div className={styles.chatInputButton}>
-        <input type="text"
-        placeholder="チャット…"
-        onChange={(e) => setMessage(e.target.value)}
-        onKeyDown={handleInputKeyDown}
-        value={message}/>
-        <button  onClick={() => handleSendMessage()}>チャット送信</button>
+        <form onSubmit={handleSubmit}>
+          <input type="text"
+          placeholder="チャット…"
+          onChange={(e) => setMessage(e.target.value)}
+          value={message}/>
+        </form>
+        <button onClick={() => handleSendMessage()}>チャット送信</button>
       </div>
       <div className={styles.chat}>
       {list.map((chat) =>(
